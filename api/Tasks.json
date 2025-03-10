@@ -17,7 +17,6 @@
     "id": 2,
     "nazwa": "Работа с массивами",
     "nomer": 2,
-    "link": "https://example.com/arrays",
     "totalPoints": 50,
     "progress": 20,
     "additional": "Обязательно использовать методы map и filter.",
