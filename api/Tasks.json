@@ -1,68 +1,124 @@
 [
   {
+    "id": 1741641949898,
     "type": "task",
-    "id": 1,
-    "nazwa": "Основы JavaScript",
-    "nomer": 1,
-    "link": "https://example.com/js-basics",
-    "totalPoints": 100,
-    "progress": 50,
+    "nazwa": "fd",
+    "nomer": 6,
+    "totalPoints": 4,
+    "progress": 0,
+    "additional": "",
     "questions": [
-      { "id": 1, "text": "Что такое замыкание?", "points": 10 },
-      { "id": 2, "text": "Как объявить переменную?", "points": 10 }
+      {
+        "id": 0,
+        "points": 4,
+        "type": "number",
+        "text": "fsd",
+        "answer": 5
+      }
     ]
   },
   {
+    "id": 1741641974300,
     "type": "task",
-    "id": 2,
-    "nazwa": "Работа с массивами",
-    "nomer": 2,
-    "totalPoints": 50,
-    "progress": 20,
-    "additional": "Обязательно использовать методы map и filter.",
+    "nazwa": "tr",
+    "nomer": 6,
+    "totalPoints": 6,
+    "progress": 0,
+    "additional": "",
     "questions": [
-      { "id": 3, "text": "Создайте массив чисел.", "points": 5 },
-      { "id": 4, "text": "Отфильтруйте чётные числа.", "points": 5 }
+      {
+        "id": 0,
+        "points": 6,
+        "type": "list-num",
+        "text": "ytr",
+        "answer": {
+          "massiv": [
+            1,
+            2,
+            0,
+            4,
+            4
+          ],
+          "consistencyImportant": true
+        }
+      }
     ]
   },
   {
+    "id": 1741652253248,
     "type": "task",
-    "id": 3,
-    "nazwa": "Типы данных в TypeScript",
-    "nomer": 3,
-    "link": "https://example.com/ts-types",
-    "totalPoints": 80,
-    "progress": 80,
+    "nazwa": "Лаба1",
+    "nomer": 6,
+    "totalPoints": 5,
+    "progress": 0,
+    "additional": "",
     "questions": [
-      { "id": 5, "text": "Что такое union types?", "points": 10 },
-      { "id": 6, "text": "Как использовать интерфейсы?", "points": 10 }
+      {
+        "id": 0,
+        "points": 5,
+        "type": "number",
+        "text": "овоуо",
+        "answer": 6
+      }
     ]
   },
   {
+    "id": 1741688730622,
     "type": "task",
-    "id": 4,
-    "nazwa": "Создание REST API",
+    "nazwa": "КР по матема",
     "nomer": 4,
-    "link": "https://example.com/rest-api",
-    "totalPoints": 150,
+    "totalPoints": 5,
     "progress": 0,
-    "additional": "Использовать Express и MongoDB.",
+    "additional": "",
     "questions": [
-      { "id": 7, "text": "Настройка сервера Express.", "points": 20 },
-      { "id": 8, "text": "Создание маршрутов API.", "points": 30 }
+      {
+        "id": 0,
+        "points": 5,
+        "type": "number",
+        "text": "2+2=",
+        "answer": 4
+      }
     ]
   },
   {
+    "id": 1741714363345,
     "type": "task",
-    "id": 5,
-    "nazwa": "Итоговый экзамен по TypeScript",
+    "nazwa": "fdf",
     "nomer": 5,
-    "link": "https://example.com/final-exam",
-    "totalPoints": 200,
+    "totalPoints": 13,
     "progress": 0,
+    "additional": "",
     "questions": [
-      { "id": 9, "text": "Напишите тип для функции.", "points": 20 },
-      { "id": 10, "text": "Создайте интерфейс для объекта.", "points": 20 }
+      {
+        "id": 0,
+        "points": 7,
+        "type": "number",
+        "text": "ytry",
+        "answer": 5
+      },
+      {
+        "id": 1,
+        "points": 6,
+        "type": "matrix",
+        "text": "ytr",
+        "answer": [
+          [
+            5,
+            6,
+            5
+          ],
+          [
+            7,
+            5,
+            7
+          ],
+          [
+            5,
+            7,
+            5
+          ]
+        ]
+      }
     ]
   }
 ]
