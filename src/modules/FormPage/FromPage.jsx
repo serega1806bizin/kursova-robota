@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
-import { Button, Col, Descriptions, Form, Input, Row, message } from 'antd';
+import {
+  Button,
+  Col,
+  Descriptions,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  message,
+} from 'antd';
 import { NotFoundPage } from '../../components/NotFoundPage';
 
 // Импортируем ваши компоненты вопросов
@@ -27,6 +36,7 @@ export const FormPage = () => {
   const [formData, setFormData] = useState({
     studentName: '',
     group: '',
+    variant: '',
     answers: {},
   });
 
@@ -199,6 +209,7 @@ export const FormPage = () => {
       'id-answer': Date.now(),
       student: formData.studentName,
       group: formData.group,
+      variant: formData.variant,
       dueTime: new Date().toISOString(),
       answers: Object.entries(formData.answers).map(([questionId, answer]) => ({
         'question-id': questionId,
@@ -231,6 +242,7 @@ export const FormPage = () => {
         setFormData({
           studentName: '',
           group: '',
+          variant: '',
           answers: {},
         });
       })
@@ -365,6 +377,21 @@ export const FormPage = () => {
               placeholder="ПЗ-221"
               onChange={e =>
                 setFormData(prev => ({ ...prev, group: e.target.value }))
+              }
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Варіант"
+            name="variant"
+            rules={[{ required: true, message: 'Введіть номер варіанту' }]}
+          >
+            <InputNumber
+              placeholder="1"
+              min={1}
+              max={test.variantCount || 10} // необов’язково, але краще обмежити
+              onChange={value =>
+                setFormData(prev => ({ ...prev, variant: value }))
               }
             />
           </Form.Item>

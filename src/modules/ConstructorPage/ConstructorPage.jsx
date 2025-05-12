@@ -26,7 +26,7 @@ export const ConstructorPage = () => {
   const [additionalText, setAdditionalText] = useState('');
   const [questions, setQuestions] = useState([]);
   const [is1Checked, setIs1Checked] = useState(false);
-
+  const [countOfVariants, setCountOfVariants] = useState(1);
   const navigate = useNavigate();
 
   const totalPoints = questions.reduce((sum, q) => sum + q.points, 0);
@@ -44,8 +44,31 @@ export const ConstructorPage = () => {
   }, []);
 
   const addQuestion = () => {
-    setQuestions(prev => [...prev, { id: Date.now(), points: 0 }]);
+    setQuestions(prev => [
+      ...prev,
+      {
+        id: Date.now(),
+        points: 0,
+        answersByVariant: {},
+      },
+    ]);
   };
+
+  const handleAnswerChange = useCallback((id, variantNum, value) => {
+    setQuestions(prev =>
+      prev.map(q =>
+        q.id === id
+          ? {
+              ...q,
+              answersByVariant: {
+                ...q.answersByVariant,
+                [variantNum]: value,
+              },
+            }
+          : q,
+      ),
+    );
+  }, []);
 
   const removeQuestion = useCallback(id => {
     setQuestions(prev => prev.filter(q => q.id !== id));
@@ -73,6 +96,21 @@ export const ConstructorPage = () => {
 
   // Отправка формы
   const onFinish = useCallback(() => {
+    const isAllVariantsFilled = questions.every(q =>
+      Array.from({ length: countOfVariants }).every((_, i) =>
+        q.answersByVariant?.[i + 1]?.toString().trim(),
+      ),
+    );
+
+    if (!isAllVariantsFilled) {
+      message.warning(
+        // eslint-disable-next-line max-len
+        'Будь ласка, заповніть відповіді для кожного варіанта у кожному питанні',
+      );
+
+      return;
+    }
+
     if (questions.length === 0) {
       message.warning('Ви повинні додати хоча б одне питання');
 
@@ -87,6 +125,7 @@ export const ConstructorPage = () => {
       totalPoints,
       progress: 0,
       additional: additionalText,
+      variantCount: countOfVariants, // ← ДОДАЙ ЦЕ
       questions,
     };
 
@@ -131,6 +170,37 @@ export const ConstructorPage = () => {
           </button>
         </div>
         <h1>Створення тесту</h1>
+        <Form.Item
+          labelCol={{ span: 7 }}
+          label="Кількість варіантів:"
+          name="variantCount"
+          rules={[
+            { required: true, message: 'Будь ласка, кількість варіантів' },
+            {
+              validator: (_, value) => {
+                if (value < 0) {
+                  return Promise.reject('Помилочка)');
+                }
+
+                return Promise.resolve();
+              },
+            },
+          ]}
+        >
+          <InputNumber
+            value={countOfVariants}
+            min={1}
+            max={5}
+            onChange={value => {
+              if (value < 0) {
+                // Ігноруємо або додатково можна встановити повідомлення вручну
+                return;
+              } else {
+                setCountOfVariants(value);
+              }
+            }}
+          />
+        </Form.Item>
         <Form
           form={form}
           onFinish={onFinish}
@@ -169,6 +239,7 @@ export const ConstructorPage = () => {
           >
             <InputNumber
               value={testNumber}
+              min={1}
               onChange={value => {
                 if (value < 0) {
                   // Ігноруємо або додатково можна встановити повідомлення вручну
@@ -207,6 +278,9 @@ export const ConstructorPage = () => {
           <Divider>Тепер створюємо питання</Divider>
           {questions.map((question, index) => (
             <TaskItem
+              answersByVariant={question.answersByVariant}
+              countOfVariants={countOfVariants}
+              onAnswerChange={handleAnswerChange}
               index={index}
               key={question.id}
               id={question.id}

@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Divider,
   Form,
   Image,
   Input,
@@ -25,12 +26,14 @@ export const TaskItem = ({
   onDelete,
   onUpdate,
   index,
+  countOfVariants,
+  onAnswerChange,
+  answersByVariant,
 }) => {
   const [selectedType, setSelectedType] = useState(initialData.type || 'text');
   const [additionalData, setAdditionalData] = useState({
     points: initialData.points || 0,
     text: initialData.text || '',
-    answer: initialData.answer || null,
     Images: initialData.Images || [],
   });
   const [is2Checked, setIs2Checked] = useState(
@@ -96,59 +99,101 @@ export const TaskItem = ({
   );
 
   const renderComponent = () => {
-    switch (selectedType) {
-      case 'text':
-        return (
-          <Text_q
-            fieldName={`text_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      case 'number':
-        return (
-          <Num_q
-            fieldName={`відповідь_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      case 'matrix':
-        return (
-          <Matrix_q
-            fieldName={`matrix_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      case 'variants':
-        return (
-          <Variants_q
-            fieldName={`variants_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      case 'list-num':
-        return (
-          <List_num
-            fieldName={`list-num_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      case 'list-pars':
-        return (
-          <List_pars
-            fieldName={`list-pars_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      case 'list-reber':
-        return (
-          <List_reber
-            fieldName={`list-reber_${id}`}
-            onChange={data => setAdditionalData(prev => ({ ...prev, ...data }))}
-          />
-        );
-      default:
-        return null;
-    }
+    return (
+      <>
+        <Divider>Введіть правильні відповіді для кожного варіанта</Divider>
+        {Array.from({ length: countOfVariants }).map((_, i) => {
+          const variantNum = i + 1;
+          const fieldName = `variant_${variantNum}_question_${id}`;
+          const handleVariantChange = data => {
+            onAnswerChange(id, variantNum, data.answer); // зберігаємо по варіанту
+          };
+
+          const variantLabel = (
+            <b style={{ display: 'block', marginBottom: 6 }}>
+              Варіант {variantNum}
+            </b>
+          );
+
+          switch (selectedType) {
+            case 'text':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <Text_q
+                    fieldName={fieldName}
+                    onChange={handleVariantChange}
+                  />
+                </div>
+              );
+            case 'number':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <Num_q fieldName={fieldName} onChange={handleVariantChange} />
+                </div>
+              );
+            case 'matrix':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <Matrix_q
+                    fieldName={fieldName}
+                    onChange={handleVariantChange}
+                  />
+                </div>
+              );
+            case 'variants':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <Variants_q
+                    fieldName={fieldName}
+                    onChange={handleVariantChange}
+                  />
+                </div>
+              );
+            case 'list-num':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <List_num
+                    fieldName={fieldName}
+                    onChange={handleVariantChange}
+                  />
+                </div>
+              );
+            case 'list-pars':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <List_pars
+                    fieldName={fieldName}
+                    onChange={handleVariantChange}
+                  />
+                </div>
+              );
+            case 'list-reber':
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <List_reber
+                    fieldName={fieldName}
+                    onChange={handleVariantChange}
+                  />
+                </div>
+              );
+            default:
+              return (
+                <div key={`variant-${variantNum}`}>
+                  {variantLabel}
+                  <p>Цей тип поки не підтримується</p>
+                </div>
+              );
+          }
+        })}
+      </>
+    );
   };
 
   return (
