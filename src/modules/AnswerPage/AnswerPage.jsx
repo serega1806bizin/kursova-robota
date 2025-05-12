@@ -78,7 +78,11 @@ export const AnswerPage = () => {
   };
 
   const computeCorrectness = (question, studentAns) => {
-    const correctAns = question.answer;
+    const correctAns = question.answersByVariant?.[answer.variant]; // ✅ замість question.answer
+    if (!correctAns) {
+      return 'none';
+    }
+
     let correctness = 'none';
 
     switch (question.type) {
@@ -88,6 +92,7 @@ export const AnswerPage = () => {
             ? 'full'
             : 'none';
         break;
+
       case 'number':
         correctness =
           Number(studentAns) === Number(correctAns) ? 'full' : 'none';
@@ -334,7 +339,11 @@ export const AnswerPage = () => {
             }
 
             const studentAns = studentAnswer.answer;
-            const correctAns = question.answer;
+            const correctAns = question.answersByVariant?.[answer.variant];
+            if (!correctAns) {
+              return null;
+            } // або відобразити повідомлення про помилку
+
             const correctness = computeCorrectness(question, studentAns);
             const bgColor =
               correctness === 'full'
