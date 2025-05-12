@@ -11,21 +11,21 @@ export const Footer = () => {
       <div className={styles.footer__container}>
         <div className={styles.footer__linksContainer}>
           <Link
-            to="https://t.me/nnngggiiii"
+            to="https://t.me/ZAMYR_l"
             target="_blank"
             className={styles.footer__link}
           >
             Замовити ПЗ
           </Link>
           <Link
-            to="https://t.me/nnngggiiii"
+            to="https://t.me/ZAMYR_l"
             target="_blank"
             className={styles.footer__link}
           >
             замовити сайт
           </Link>
           <Link
-            to="https://t.me/nnngggiiii"
+            to="https://t.me/ZAMYR_l"
             target="_blank"
             className={styles.footer__link}
           >
