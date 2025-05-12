@@ -8,6 +8,7 @@ import {
   Input,
   InputNumber,
   Select,
+  Tooltip,
   Upload,
 } from 'antd';
 import { Matrix_q } from './answer/matrix-q';
@@ -214,7 +215,9 @@ export const TaskItem = ({
           <Select.Option value="number">Одне число</Select.Option>
           <Select.Option value="list-num">Список чисел</Select.Option>
           <Select.Option value="matrix">Матриця</Select.Option>
-          <Select.Option value="variants">Варіанти відповідей</Select.Option>
+          <Select.Option value="variants" disabled>
+            Варіанти відповідей (в удосконаленні)
+          </Select.Option>
           <Select.Option value="list-pars">Перелік пар</Select.Option>
           <Select.Option value="list-reber">Перелік ребер</Select.Option>
         </Select>
