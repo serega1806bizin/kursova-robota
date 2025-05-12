@@ -23,10 +23,13 @@ import { List_reber } from './answer/list-reber';
 import { Variant_Q } from './answer/variants-q';
 
 export const FormPage = () => {
+  const [formKey, setFormKey] = useState(Date.now());
+
   const [form] = Form.useForm();
   const { testId } = useParams();
   const [wasOutOfTab, setWasOutOfTab] = useState(false);
   const [tabSwitchCount, setTabSwitchCount] = useState(0); // Лічильник виходів із вкладки
+  const [submitStatus, setSubmitStatus] = useState('idle');
 
   const [test, setTest] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -219,6 +222,7 @@ export const FormPage = () => {
     };
 
     setIsSubmitting(true);
+    setSubmitStatus('idle');
 
     fetch('https://stradanie-production-f14d.up.railway.app/submit', {
       method: 'POST',
@@ -229,16 +233,15 @@ export const FormPage = () => {
         if (!response.ok) {
           throw new Error('Ошибка отправки данных');
         }
-
         return response.json();
       })
       .then(data => {
-        // eslint-disable-next-line no-console
         console.log('Прогресс обновлён и данные сохранены:', data);
         message.success('Відповідь успішно відправлено!');
-        window.close(); // Если нужно сразу закрыть окно
+        setSubmitStatus('success'); // ✅ Зелений
+        setFormKey(Date.now()); // 💥 Змінює ключ → перезавантажує всю форму
+
         form.resetFields();
-        // Сброс локального состояния:
         setFormData({
           studentName: '',
           group: '',
@@ -247,9 +250,9 @@ export const FormPage = () => {
         });
       })
       .catch(error => {
-        // eslint-disable-next-line no-console
         console.error('Ошибка отправки:', error);
         message.error('Произошла ошибка при отправке!');
+        setSubmitStatus('error'); // ❌ Червоний
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -307,6 +310,7 @@ export const FormPage = () => {
         </Descriptions>
 
         <Form
+          key={formKey}
           form={form}
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
@@ -402,10 +406,29 @@ export const FormPage = () => {
           <Button
             type="primary"
             htmlType="submit"
-            style={{ flex: 1, minWidth: 200 }}
             loading={isSubmitting}
+            style={{
+              flex: 1,
+              minWidth: 200,
+              backgroundColor:
+                submitStatus === 'success'
+                  ? 'green'
+                  : submitStatus === 'error'
+                    ? 'red'
+                    : undefined,
+              borderColor:
+                submitStatus === 'success'
+                  ? 'green'
+                  : submitStatus === 'error'
+                    ? 'red'
+                    : undefined,
+            }}
           >
-            Надіслати
+            {submitStatus === 'success'
+              ? '✅ Відправлено'
+              : submitStatus === 'error'
+                ? '❌ Помилка'
+                : 'Надіслати'}
           </Button>
         </Form>
       </Col>
